@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4">¿Qué quieres cambiar?</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            {% if item.image %}
+                                <img src="{{ url_for('uploaded_file', filename=item.image) }}" 
+                                     alt="Portada" class="img-fluid rounded shadow-sm" 
+                                     style="max-height: 250px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center rounded" 
+                                     style="height: 200px; border: 2px dashed #dee2e6;">
+                                    <span class="text-muted">Sin imagen</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-8">
+                            <form method="POST" enctype="multipart/form-data">
+                                {{ form.hidden_tag() }}
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Título</label>
+                                    {{ form.title(class="form-control form-control-lg", placeholder="Ej. El viaje de Chihiro") }}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Tipo</label>
+                                        {{ form.type(class="form-select") }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Género</label>
+                                        {{ form.genre(class="form-select") }}
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Calificación ⭐</label>
+                                    {{ form.rating(class="form-control", type="number", step="0.1", min="1", max="10") }}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Nueva Imagen (opcional)</label>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tu comentario</label>
+                                    {{ form.comment(class="form-control", rows="3") }}
+                                </div>
+
+                                <div class="d-flex gap-2 pt-3">
+                                    <button type="submit" class="btn btn-primary px-4" style="border-radius: 8px;">
+                                        Guardar cambios
+                                    </button>
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary px-4" style="border-radius: 8px;">
+                                        Cancelar
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div> </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

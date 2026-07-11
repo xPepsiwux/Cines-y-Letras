@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="card p-4">
+  <h4 class="mb-3">Editar Usuario</h4>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label>Usuario</label>
+      <input type="text" name="username" class="form-control"
+             value="{{ usuario.username }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Rol</label>
+      <select name="role" class="form-select">
+        <option value="user" {% if usuario.role=='user' %}selected{% endif %}>Usuario</option>
+        <option value="moderador" {% if usuario.role=='moderador' %}selected{% endif %}>Moderador</option>
+        <option value="admin" {% if usuario.role=='admin' %}selected{% endif %}>Administrador</option>
+      </select>
+    </div>
+
+    <button class="btn btn-teal">Guardar cambios</button>
+    <a href="{{ url_for('panel_admin') }}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

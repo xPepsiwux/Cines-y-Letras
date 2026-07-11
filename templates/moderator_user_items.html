@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0 text-white">Contenidos de <span class="text-info">{{ user.username }}</span></h2>
+            <p class="text-white-50">Gestionando el catálogo de este usuario</p>
+        </div>
+        <a href="{{ url_for('moderator_panel') }}" class="btn btn-outline-light rounded-pill px-4">
+            ⬅️ Volver al Panel
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-0" style="border-radius: 15px; background: rgba(255,255,255,0.05);">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-white">
+                    <thead style="background: rgba(0,0,0,0.3);">
+                        <tr class="text-teal border-bottom border-secondary">
+                            <th class="ps-4 py-3">Miniatura</th>
+                            <th class="py-3">Título</th>
+                            <th class="py-3">Tipo</th>
+                            <th class="py-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr class="border-bottom border-secondary" style="background: transparent;">
+                            <td class="ps-4">
+                                {% if item.image %}
+                                    <img src="{{ url_for('uploaded_file', filename=item.image) }}" 
+                                         class="rounded shadow-sm" 
+                                         style="width: 55px; height: 55px; object-fit: cover; border: 1px solid #444;">
+                                {% else %}
+                                    <div class="bg-dark rounded d-flex align-items-center justify-content-center border border-secondary" 
+                                         style="width: 55px; height: 55px; font-size: 0.8rem;">
+                                        🖼️
+                                    </div>
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                <span class="fw-bold text-white fs-5">{{ item.title }}</span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-teal text-dark px-2 py-1" style="font-size: 0.75rem;">
+                                    {{ item.type|upper }}
+                                </span>
+                            </td>
+
+                            <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ url_for('edit_item', item_id=item.id) }}" 
+                                       class="btn btn-sm btn-outline-warning px-3">
+                                        ✏️ Editar
+                                    </a>
+
+                                    <form method="POST" action="{{ url_for('delete_item', item_id=item.id) }}" 
+                                          style="display:inline;" onsubmit="return confirm('¿Seguro que quieres eliminar este contenido?');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button class="btn btn-sm btn-outline-danger px-3">
+                                            🗑️ Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-white-50">
+                                Este usuario aún no ha agregado contenidos.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,266 @@
+:root {
+  --teal: #00c4b4;
+  --dark-bg: #051622;
+  --card-bg: #07212a;
+  --input-bg: #0a2d39;
+  --text-main: #e9f7f6;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- BASE --- */
+body {
+  background: linear-gradient(180deg, var(--dark-bg), #02121a);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* --- MODALES (Fix Ventanas Blancas) --- */
+.modal-content {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.modal-header, .modal-footer {
+  border-color: var(--border-color);
+}
+
+/* Fix específico para el botón de cerrar del modal (X) */
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- BOTÓN "AGREGAR CONTENIDO" (El que no se veía) --- */
+/* Forzamos visibilidad en el sidebar y botones de acción */
+.btn-outline-light, 
+.btn-light,
+[data-bs-toggle="modal"] {
+    color: var(--text-main) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--teal) !important;
+    color: var(--dark-bg) !important;
+    border-color: var(--teal) !important;
+}
+
+/* --- FORMULARIOS Y SELECTS --- */
+.form-control, .form-select, input, textarea, select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: var(--input-bg);
+  color: white;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 0.25rem rgba(0, 196, 180, 0.25);
+}
+
+/* --- CARDS Y PANELES --- */
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+/* Fix para títulos y textos en cards que se resisten */
+.card h5, .card h4, .card p, .card span:not(.badge) {
+    color: var(--text-main) !important;
+}
+
+/* --- TABLAS (Panel Admin) --- */
+.table {
+    --bs-table-bg: transparent !important;
+    --bs-table-color: var(--text-main) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.03) !important;
+}
+
+.table thead th {
+    background-color: var(--dark-bg) !important;
+    color: var(--teal) !important;
+    border-bottom: 1px solid var(--teal) !important;
+}
+
+/* --- PANEL MODERADOR (Items Pequeños) --- */
+.item-moderador-card {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.item-moderador-card .fw-bold {
+    color: var(--text-main) !important;
+}
+
+/* --- BADGES Y ACENTOS --- */
+.text-teal { color: var(--teal) !important; }
+
+.badge.bg-dark, .bg-teal {
+    background-color: var(--teal) !important;
+    color: #012322 !important;
+}
+
+/* --- MODO NOCHE SWITCH --- */
+body.dark-mode {
+  --dark-bg: #020b10;
+  --card-bg: #051622;
+}
+
+.boton-mis-contenidos {
+    background-color: #e0e0e0; /* El gris claro que ya tienes */
+    color: #1a1a1a; /* Un color oscuro para que resalte */
+}
+
+/* OJITO VER CONTRASEÑA */
+.toggle-password {
+  position: absolute;
+  top: 38px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--teal);
+
+}
+
+/* ========================================== */
+/* LUMI IA MODERNO              */
+/* ========================================== */
+
+/* Botón flotante con efecto de pulso sutil */
+#lumi-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00c4b4, #0097a7);
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 196, 180, 0.4);
+    z-index: 9999;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#lumi-button:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 196, 180, 0.6);
+}
+
+/* Contenedor de la ventana del chat */
+#lumi-chat {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 340px;
+    height: 450px;
+    z-index: 9998;
+    border-radius: 18px !important; /* Bordes bien redondeados */
+    border: 1px solid #2b3e51;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Ajustes automáticos para el Modo Oscuro */
+body.dark-mode #lumi-chat {
+    background: #0b151e !important; /* Color oscuro a juego con tu Dashboard */
+    color: #e2e8f0;
+    border-color: #1f3143;
+}
+
+body.dark-mode #lumi-chat .card-header {
+    background: #162636 !important;
+    border-bottom: 1px solid #1f3143;
+    color: #fff;
+    padding: 12px 15px;
+}
+
+/* Estilo moderno para la caja de mensajes interna */
+#lumi-messages {
+    scrollbar-width: thin;
+    scrollbar-color: #1f3143 #0b151e;
+}
+
+/* Personalización de los Globos de Texto (Burbujas) */
+#lumi-messages .bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+    border-radius: 18px 18px 4px 18px !important; /* Estilo burbuja de mensajería */
+    padding: 9px 14px !important;
+}
+
+#lumi-messages .bg-secondary {
+    background: #162636 !important;
+    border: 1px solid #2b3e51;
+    color: #9cdcfe !important;
+    border-radius: 18px 18px 18px 4px !important; /* Estilo burbuja izquierda */
+    padding: 9px 14px !important;
+}
+
+/* Estilización de la zona de entrada */
+body.dark-mode #lumi-chat input {
+    background: #0b151e;
+    color: white;
+    border: 1px solid #2b3e51;
+    border-radius: 8px 0 0 8px !important;
+}
+
+body.dark-mode #lumi-chat input:focus {
+    background: #0f1c2a;
+    border-color: #00c4b4;
+    box-shadow: none;
+}
+
+/* Botón de Enviar acoplado */
+#lumi-chat .btn-teal {
+    background: #00c4b4;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 0 8px 8px 0 !important;
+    transition: background 0.2s;
+}
+
+#lumi-chat .btn-teal:hover {
+    background: #00a89a;
+}
+
+/* Botón de cerrar (X) */
+#lumi-chat .btn-light {
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+body.dark-mode #lumi-chat .btn-light:hover {
+    color: #fff;
+    background: transparent;
+}

@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+{% block title %}Lumi IA{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-9">
+
+        <div class="card shadow-lg border-0">
+
+            <div class="card-header text-center">
+
+                <h2>✨ Lumi</h2>
+
+                <small class="text-muted">
+                    Tu asistente inteligente de Cine & Letras
+                </small>
+
+            </div>
+
+            <div
+                id="chat-box"
+                class="card-body"
+                style="height:500px; overflow-y:auto;">
+
+                <div class="mb-3">
+
+                    <div class="alert alert-info">
+
+                        👋 Hola <b>{{ current_user.username }}</b>.
+
+                        <br><br>
+
+                        Soy Lumi.
+
+                        ¿En qué puedo ayudarte?
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+
+                <div class="input-group">
+
+                    <input
+                        id="mensaje"
+                        class="form-control"
+                        placeholder="Escribe un mensaje...">
+
+                    <button
+                        class="btn btn-teal"
+                        onclick="enviarMensaje()">
+
+                        Enviar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function agregarMensaje(texto, clase){
+
+    let chat = document.getElementById("chat-box");
+
+    chat.innerHTML += `
+
+        <div class="mb-3 text-${clase=="user"?"end":"start"}">
+
+            <div class="d-inline-block p-3 rounded shadow-sm
+                ${clase=="user"?"bg-primary text-white":"bg-secondary text-white"}">
+
+                ${texto}
+
+            </div>
+
+        </div>
+
+    `;
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+async function enviarMensaje(){
+
+    let input=document.getElementById("mensaje");
+
+    let mensaje=input.value.trim();
+
+    if(mensaje=="") return;
+
+    agregarMensaje(mensaje,"user");
+
+    input.value="";
+
+    let respuesta=await fetch("/lumi/chat",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            mensaje:mensaje
+
+        })
+
+    });
+
+    let data=await respuesta.json();
+
+    agregarMensaje(data.respuesta,"ai");
+
+}
+
+document.getElementById("mensaje")
+.addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+
+        enviarMensaje();
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

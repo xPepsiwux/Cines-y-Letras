@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block title %}Registro - Cine & Letras{% endblock %}
+{% block content %}
+
+<div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 75vh;">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="w-100 mb-2" style="max-width: 450px;">
+          {% for category, message in messages %}
+            <div class="alert alert-custom alert-dismissible fade show shadow-sm p-3 d-flex align-items-center" role="alert" 
+                 style="background-color: rgba(23, 162, 184, 0.1); border-left: 4px solid #008080; color: #e0e0e0; border-radius: 8px;">
+              <span class="me-2">🔔</span>
+              <div class="small fw-semibold">{{ message }}</div>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.75rem;"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="card p-4 p-md-5 shadow-lg border-0 text-white" 
+         style="width: 100%; max-width: 450px; background-color: #0b1a24; border-radius: 16px;">
+        
+        <div class="text-center mb-4">
+            <h2 class="fw-bold tracking-tight" style="color: #ffffff;">Registro</h2>
+            <p class="text-muted small">Crea una cuenta para empezar tu biblioteca personal</p>
+        </div>
+
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label small fw-bold text-uppercase mb-1", style="letter-spacing: 0.5px; color: #a0aec0;") }}
+                <div class="input-group">
+                    <span class="input-group-text bg-dark border-0 text-muted" style="border-radius: 8px 0 0 8px;">👤</span>
+                    {{ form.username(class="form-control custom-input bg-dark text-white border-0 p-2", 
+                                     placeholder="Crea tu usuario", 
+                                     style="border-radius: 0 8px 8px 0; font-size: 0.95rem;") }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label small fw-bold text-uppercase mb-1", style="letter-spacing: 0.5px; color: #a0aec0;") }}
+                <div class="input-group">
+                    <span class="input-group-text bg-dark border-0 text-muted" style="border-radius: 8px 0 0 8px;">🔒</span>
+                    {{ form.password(class="form-control custom-input bg-dark text-white border-0 p-2", 
+                                     placeholder="Mínimo 6 caracteres", 
+                                     style="border-radius: 0 8px 8px 0; font-size: 0.95rem;") }}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                {{ form.confirm.label(class="form-label small fw-bold text-uppercase mb-1", style="letter-spacing: 0.5px; color: #a0aec0;") }}
+                <div class="input-group">
+                    <span class="input-group-text bg-dark border-0 text-muted" style="border-radius: 8px 0 0 8px;">🔄</span>
+                    {{ form.confirm(class="form-control custom-input bg-dark text-white border-0 p-2", 
+                                    placeholder="Repite tu contraseña", 
+                                    style="border-radius: 0 8px 8px 0; font-size: 0.95rem;") }}
+                </div>
+            </div>
+
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-teal-action w-100 fw-bold py-2 text-white shadow-sm", 
+                               style="background: linear-gradient(135deg, #008080, #006666); border: none; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;") }}
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="small text-muted mb-0">¿Ya tienes una cuenta? 
+                <a href="{{ url_for('login') }}" class="text-teal-link fw-semibold text-decoration-none" style="color: #00a3a3; transition: color 0.2s ease;">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Foco dinámico para las cajas de texto */
+.custom-input:focus {
+    background-color: #12222d !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.4) !important;
+    outline: none !important;
+}
+
+/* Hover interactivo para tu botón Teal corporativo */
+.btn-teal-action:hover {
+    background: linear-gradient(135deg, #00a3a3, #008080) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 128, 128, 0.3) !important;
+}
+
+.btn-teal-action:active {
+    transform: translateY(1px);
+}
+
+.text-teal-link:hover {
+    color: #00cccc !important;
+    text-decoration: underline !important;
+}
+
+/* Animación de entrada para las notificaciones flash */
+.alert-custom {
+    animation: slideDown 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+{% endblock %}

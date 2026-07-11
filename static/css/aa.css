@@ -1,0 +1,83 @@
+body {
+  background: #f4f6f8;
+  color: #212529;
+}
+
+.card,
+.modal-content,
+.table,
+.form-control,
+.form-select {
+  background-color: #ffffff;
+  color: #212529;
+}
+/* ===================== */
+/* MODO OSCURO GLOBAL */
+/* ===================== */
+
+body.dark-mode {
+  background: linear-gradient(180deg, #051622, #02121a);
+  color: #e9f7f6;
+}
+
+/* Cards */
+body.dark-mode .card,
+body.dark-mode .list-group-item {
+  background-color: #1f1f1f !important;
+  color: #f1f1f1;
+  border: 1px solid #333;
+}
+
+/* Modales */
+body.dark-mode .modal-content {
+  background-color: #1e1e1e !important;
+  color: #ffffff;
+}
+
+/* Formularios */
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode textarea {
+  background-color: #2a2a2a !important;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa;
+}
+
+/* Tablas */
+body.dark-mode .table {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+body.dark-mode .table thead {
+  background-color: #1a1a1a;
+}
+
+body.dark-mode .table tbody tr {
+  background-color: #242424;
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+  border-color: #333;
+}
+
+/* Panel Admin / Moderador */
+body.dark-mode .admin-panel,
+body.dark-mode .moderator-panel {
+  background-color: #161616;
+}
+
+/* Bootstrap helpers */
+body.dark-mode .bg-light {
+  background-color: #1e1e1e !important;
+}
+
+body.dark-mode .text-dark {
+  color: #f1f1f1 !important;
+}

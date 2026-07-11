@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8">
+    <div class="card p-4">
+      <h4>Agregar elemento</h4>
+      <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.title.label }} {{ form.title(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.type.label }} {{ form.type(class="form-select") }}
+        </div>
+        <div class="mb-3">
+          {{ form.genre.label }} {{ form.genre(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.rating.label }} {{ form.rating(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          {{ form.comment.label }} {{ form.comment(class="form-control", rows="3") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Portada (opcional, max 5 MB)</label>
+          <input type="file" name="image" class="form-control" accept="image/*">
+        </div>
+        <div class="d-grid">
+          {{ form.submit(class="btn btn-teal") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

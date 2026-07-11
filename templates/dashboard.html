@@ -1,0 +1,335 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="modal fade" id="modalTipo" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg text-white" style="background-color: #0b1a24; border-radius: 16px;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title w-100 text-center fw-bold mt-2">¿Qué deseas agregar?</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-grid gap-3">
+          <button class="btn btn-select-type py-2.5 fw-bold" onclick="openAddModal('libro')" style="border: 1px solid rgba(23, 162, 184, 0.4); color: #17a2b8;">📘 Libro</button>
+          <button class="btn btn-select-type py-2.5 fw-bold" onclick="openAddModal('pelicula')" style="border: 1px solid rgba(220, 53, 69, 0.4); color: #dc3545;">🎬 Película</button>
+          <button class="btn btn-select-type py-2.5 fw-bold" onclick="openAddModal('serie')" style="border: 1px solid rgba(40, 167, 69, 0.4); color: #28a745;">📺 Serie</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalAdd" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg text-white" style="background-color: #0b1a24; border-radius: 16px;">
+      <form method="POST" action="{{ url_for('add_item') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
+        
+        <div class="modal-header border-bottom border-secondary">
+          <h5 class="modal-title fw-bold text-white">Agregar nuevo contenido</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        
+        <div class="modal-body p-4">
+          <input type="hidden" name="type" id="inputType">
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.5px; color: #a0aec0;">Título</label>
+            <input type="text" name="title" class="form-control custom-input bg-dark text-white border-0 p-2" required placeholder="Ej: Interstellar" style="font-size: 0.95rem;">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.5px; color: #a0aec0;">Género</label>
+            <select name="genre" class="form-select custom-input bg-dark text-white border-0 p-2" style="font-size: 0.95rem;">
+              <option value="" class="text-muted">Seleccionar...</option>
+              <option value="accion">Acción</option>
+              <option value="romance">Romance</option>
+              <option value="terror">Terror</option>
+              <option value="drama">Drama</option>
+              <option value="comedia">Comedia</option>
+              <option value="fantasia">Fantasía</option>
+              <option value="ciencia_ficcion">Ciencia ficción</option>
+              <option value="misterio">Misterio</option>
+              <option value="aventura">Aventura</option>
+              <option value="documental">Documental</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.5px; color: #a0aec0;">Calificación (1 al 10)</label>
+            <input type="number" name="rating" step="0.1" min="1" max="10" class="form-control custom-input bg-dark text-white border-0 p-2" placeholder="Ej: 9.5" style="font-size: 0.95rem;">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.5px; color: #a0aec0;">Comentario u Opinión</label>
+            <textarea name="comment" class="form-control custom-input bg-dark text-white border-0 p-2" rows="3" placeholder="Escribe lo que te pareció..." style="font-size: 0.95rem;"></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.5px; color: #a0aec0;">Portada o Imagen</label>
+            <input type="file" name="image" class="form-control custom-input bg-dark text-white border-0 p-2" accept="image/*" style="font-size: 0.95rem;">
+          </div>
+        </div>
+        
+        <div class="modal-footer border-0 pt-0">
+          <button type="submit" class="btn btn-teal-action w-100 text-white fw-bold py-2">Guardar contenido</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+
+  <div class="col-12 col-md-3">
+    <div class="card p-3 border-0 shadow-lg h-100 text-white" style="background-color: #0b1a24; border-radius: 16px;">
+      <div class="text-center my-3">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" class="sidebar-logo mb-2" style="width:75px; filter: drop-shadow(0px 4px 8px rgba(0,128,128,0.3));">
+        <h5 class="fw-bold tracking-wide mt-2">Cine & Letras</h5>
+      </div>
+
+      <hr class="border-secondary my-3">
+
+      <div class="d-grid gap-2">
+        <button class="btn btn-teal-action fw-bold py-2.5 text-white mb-2" data-bs-toggle="modal" data-bs-target="#modalTipo">
+          ➕ Agregar contenido
+        </button>
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-sidebar-nav text-start py-2 px-3 align-items-center active-nav">
+          🏠 <span class="ms-2">Mis contenidos</span>
+        </a>
+          
+        <a href="{{ url_for('public_profile', username=current_user.username) }}" class="btn btn-sidebar-nav text-start py-2 px-3 align-items-center">
+          👤 <span class="ms-2">Ver perfil</span>
+        </a>
+
+        {% if is_moderator %}
+          <a href="{{ url_for('moderator_panel') }}" class="btn btn-sidebar-panel text-start py-2 px-3 align-items-center mt-2" style="border-left: 3px solid #ffc107; color: #ffc107;">
+            🛡️ <span class="ms-2">Panel Moderador</span>
+          </a>
+        {% endif %}
+
+        {% if is_admin %}
+          <a href="{{ url_for('admin_panel') }}" class="btn btn-sidebar-panel text-start py-2 px-3 align-items-center mt-1" style="border-left: 3px solid #dc3545; color: #dc3545;">
+            🛠️ <span class="ms-2">Panel Admin</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-9">
+    <h3 class="fw-bold mb-4 text-white tracking-tight">¿Qué has visto?</h3>
+
+    <div class="row g-3">
+      {% for it in items %}
+      <div class="col-12 col-md-6">
+        <div class="card p-3 h-100 border-0 text-white dashboard-item-card transition-all" style="background-color: #0b1a24; border-radius: 14px;">
+          <div class="d-flex gap-3 h-100">
+            
+            {% if it.image %}
+              <img src="{{ url_for('uploaded_file', filename=it.image) }}" class="card-cover-img">
+            {% else %}
+              <div class="card-cover-placeholder d-flex align-items-center justify-content-center text-muted">
+                <span>🎬</span>
+              </div>
+            {% endif %}
+
+            <div class="d-flex flex-column justify-content-between flex-grow-1">
+              <div>
+                <h5 class="fw-bold mb-1 text-white card-item-title">{{ it.title }}</h5>
+                <div class="d-flex gap-1 flex-wrap mb-2">
+                  <span class="badge bg-secondary text-uppercase px-2 py-1" style="font-size: 0.65rem; background-color: #1a2f3c !important;">{{ it.type }}</span>
+                  {% if it.genre %}
+                    <span class="badge text-uppercase px-2 py-1" style="font-size: 0.65rem; background-color: rgba(0, 128, 128, 0.2); color: #00cccc;">{{ it.genre.replace('_', ' ') }}</span>
+                  {% endif %}
+                </div>
+                <div class="fw-bold mt-1" style="color: #00ffff; font-size: 0.95rem;">
+                  ⭐ {{ it.rating if it.rating else 'Sin nota' }}<span class="text-muted small" style="font-size: 0.75rem;">/10</span>
+                </div>
+                <p class="small text-muted mt-2 mb-0 card-comment-text">
+                  {% if it.comment %}
+                    "{{ it.comment[:100] ~ ('...' if it.comment|length > 100 else '') }}"
+                  {% else %}
+                    <span class="text-muted opacity-50 italic">Sin comentarios.</span>
+                  {% endif %}
+                </p>
+              </div>
+
+              <div class="mt-3 d-flex justify-content-end gap-2 border-top border-secondary pt-2" style="border-top: 1px solid rgba(255,255,255,0.05) !important;">
+                <a href="{{ url_for('edit_item', item_id=it.id) }}" class="btn btn-sm btn-action-edit d-flex align-items-center gap-1">
+                  ✏️ Editar
+                </a>
+                <form method="post" action="{{ url_for('delete_item', item_id=it.id) }}" onsubmit="return confirm('¿Seguro que deseas eliminar este contenido?');" class="m-0">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
+                  <button class="btn btn-sm btn-action-delete d-flex align-items-center gap-1">🗑️ Eliminar</button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12">
+        <div class="p-5 text-center text-white" style="background-color: #0b1a24; border-radius: 16px; border: 2px dashed rgba(0, 128, 128, 0.2);">
+          <h4 class="fw-bold mb-2">Tu biblioteca está vacía 📚</h4>
+          <p class="text-muted small mb-3">No has registrado lecturas, series o películas todavía.</p>
+          <button class="btn btn-teal-action px-4 py-2 fw-bold text-white btn-sm" data-bs-toggle="modal" data-bs-target="#modalTipo">Registrar mi primer contenido</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+/* 1. Animaciones y Tarjetas de Contenido */
+.dashboard-item-card {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.dashboard-item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 128, 128, 0.15);
+  background-color: #0e222f !important;
+}
+.card-cover-img {
+  width: 105px;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.card-cover-placeholder {
+  width: 105px;
+  height: 145px;
+  background-color: #162630;
+  border-radius: 10px;
+  font-size: 2rem;
+}
+.card-item-title {
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+}
+.card-comment-text {
+  font-style: italic;
+  line-height: 1.35;
+  color: #a0aec0 !important;
+}
+
+/* 2. Botones de Acción Internos (Editar / Eliminar) */
+.btn-action-edit {
+  background-color: rgba(255, 193, 7, 0.08);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.btn-action-edit:hover {
+  background-color: #ffc107;
+  color: #000;
+  box-shadow: 0 0 10px rgba(255,193,7,0.2);
+}
+.btn-action-delete {
+  background-color: rgba(220, 53, 69, 0.08);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #f86c6c;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+}
+.btn-action-delete:hover {
+  background-color: #dc3545;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(220,53,69,0.2);
+}
+
+/* 3. Botones y Menús Laterales */
+.btn-sidebar-nav {
+  background-color: transparent;
+  color: #a0aec0;
+  border: none;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.btn-sidebar-nav:hover {
+  background-color: rgba(255,255,255,0.04);
+  color: #ffffff;
+}
+.active-nav {
+  background-color: rgba(0, 128, 128, 0.12) !important;
+  color: #00ffff !important;
+  font-weight: 600;
+}
+.btn-sidebar-panel {
+  background-color: rgba(255,255,255,0.02);
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.btn-sidebar-panel:hover {
+  background-color: rgba(255,255,255,0.06);
+}
+
+/* Botones de selección de tipo en Modal */
+.btn-select-type {
+  background-color: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.btn-select-type:hover {
+  background-color: rgba(255,255,255,0.06);
+  transform: scale(1.01);
+}
+
+/* 4. Inputs y Placeholders Visibles */
+.custom-input:focus {
+  background-color: #12222d !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.4) !important;
+  outline: none !important;
+}
+.custom-input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.custom-input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.btn-teal-action {
+  background: linear-gradient(135deg, #008080, #006666);
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.btn-teal-action:hover {
+  background: linear-gradient(135deg, #00a3a3, #008080) !important;
+  box-shadow: 0 4px 12px rgba(0, 128, 128, 0.3) !important;
+}
+</style>
+
+<script>
+function openAddModal(type) {
+  const modalTipoElement = document.getElementById('modalTipo');
+  const modalTipo = bootstrap.Modal.getInstance(modalTipoElement) || new bootstrap.Modal(modalTipoElement);
+  modalTipo.hide();
+  
+  document.getElementById('inputType').value = type;
+  setTimeout(() => {
+    const modalAdd = new bootstrap.Modal(document.getElementById('modalAdd'));
+    modalAdd.show();
+  }, 150);
+}
+</script>
+
+{% endblock %}
